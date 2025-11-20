@@ -1,7 +1,7 @@
 {
-  "id": "monzagel-test",
-  "name": "MonzaGel: piattaforma ordini",
-  "short_name": "MON",
+  "id": "pwa-push-noticiation-demo",
+  "name": "PWA Push Notifitaion Demo",
+  "short_name": "PWA Push",
   "lang": "it",
   "icons": [
     {
