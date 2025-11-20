@@ -1,0 +1,19 @@
+{
+  "id": "monzagel-test",
+  "name": "MonzaGel: piattaforma ordini",
+  "short_name": "MON",
+  "lang": "it",
+  "icons": [
+    {
+      "src": "/icons/Icon.png",
+      "sizes": "48x48",
+      "type": "image/svg+xml"
+    }
+  ],
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/",
+  "background_color": "white",
+  "_comment_orientation": "",
+  "orientation": "any"
+}
