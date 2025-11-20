@@ -10,6 +10,8 @@ Backend (Server): Un server Node.js con Express che memorizza le sottoscrizioni 
 
 🌟 Caratteristiche Principali
 
+Sicurezza migliorata: Le chiavi VAPID private sono gestite tramite variabili d'ambiente (.env).
+
 Setup Completo: Dalla sottoscrizione al client all'invio della notifica dal server.
 
 Gestione VAPID: Recupero della chiave pubblica VAPID dal server e conversione in Uint8Array sul client per l'iscrizione.
@@ -24,17 +26,23 @@ Prerequisiti
 
 Node.js (versione 14+)
 
-Un set di chiavi VAPID (pubblica e privata). Se non le hai, puoi generarne di nuove con la libreria web-push.
+Un set di chiavi VAPID (pubblica e privata).
 
-1. Configurazione del Backend (server.js)
+La libreria dotenv (installata via npm install dotenv per il server).
 
-ATTENZIONE: Devi sostituire i placeholder con le tue chiavi VAPID reali.
+1. Configurazione del Backend (Sicurezza)
 
-Apri server.js.
+ATTENZIONE: Il file server.js legge ora le chiavi segrete da variabili d'ambiente per garantire la sicurezza del codice pubblicato.
 
-Sostituisci i valori di vapidPublicKey e vapidPrivateKey con le tue chiavi.
+Crea il file .env: Nella root del progetto Node.js, crea un file chiamato .env.
 
-Sostituisci l'email in vapidMailto.
+Aggiungi le tue chiavi: Inserisci le tue chiavi VAPID pubbliche e private reali nel file .env nel seguente formato:
+
+VAPID_PUBLIC_KEY="LA_TUA_CHIAVE_PUBBLICA"
+VAPID_PRIVATE_KEY="LA_TUA_CHIAVE_PRIVATA_SECRETA"
+VAPID_MAILTO="mailto:tua.email@esempio.com"
+
+Proteggi le chiavi: Assicurati di aggiungere .env al tuo file .gitignore in modo che le chiavi private non vengano mai caricate su GitHub.
 
 2. Esecuzione
 
@@ -42,7 +50,7 @@ Avvia il server e l'applicazione frontend in due terminali separati.
 
 Terminale 1: Avvia il Server Node.js
 
-# Assumendo che tu abbia installato le dipendenze del server (es. npm install express web-push body-parser)
+# Assumendo che tu abbia installato le dipendenze del server
 
 node server.js
 
@@ -83,9 +91,12 @@ Service Worker. Intercetta gli eventi push e notificationclick.
 
 server.js
 
-Server Node.js (Express). Fornisce la chiave VAPID, salva le sottoscrizioni e gestisce l'invio delle notifiche.
+Server Node.js (Express). Fornisce la chiave VAPID pubblica e gestisce l'invio delle notifiche.
 
 vite.config.ts
 
 Configurazione del proxy per connettere il frontend (:5173) al server (:3000).
-# PWA-Push-Notification-Demo-React-Node.js-
+
+.env
+
+Contiene le chiavi VAPID private e pubbliche, tenute fuori dal controllo di versione (Git).
