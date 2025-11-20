@@ -1,6 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 //Contains the React logic to register the Service Worker, request permission, and subscribe to the push service.
+
+// Nome del canale broadcast usato per comunicare dal Service Worker all'app
+const BROADCAST_CHANNEL_NAME = "test_push_channel";
 
 const setupPwa = async () => {
   //Registration of Service Worker
@@ -87,11 +90,23 @@ const subscribeUserToPush = async (registration: ServiceWorkerRegistration) => {
   }
 };
 
+// Interfaccia per il payload (per TypeScript)
+interface PushPayload {
+  title: string;
+  message: string;
+  url?: string;
+}
+
 const App: React.FC = () => {
-  // State is used to show the status to the user
-  const [status, setStatus] = React.useState("Initializing...");
+  // Status to view the last notification received in-app
+  const [lastNotification, setLastNotification] = useState<PushPayload | null>(
+    null
+  );
+  const [messageSource, setMessageSource] = useState<string | null>(null);
+  const [status, setStatus] = useState("Initializing...");
 
   useEffect(() => {
+    // 1. Start Service Worker registration and Push subscription
     setStatus("Attempting notification setup...");
     setupPwa()
       .then(() =>
@@ -100,7 +115,25 @@ const App: React.FC = () => {
         )
       )
       .catch((e) => setStatus(`Critical error during setup: ${e.message}`));
-  }, []); // Run only on component mount
+
+    // 2. Listening via broadcast channel
+    const channel = new BroadcastChannel(BROADCAST_CHANNEL_NAME);
+    channel.onmessage = (event) => {
+      if (event.data && event.data.type === "PUSH_NOTIFICATION_ARRIVED") {
+        setLastNotification(event.data.payload as PushPayload);
+        setMessageSource("BroadcastChannel");
+        console.log(
+          "Received PUSH data via BroadcastChannel:",
+          event.data.payload
+        );
+      }
+    };
+
+    // Clean up when unmounting the component
+    return () => {
+      channel.close();
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
@@ -108,31 +141,59 @@ const App: React.FC = () => {
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
           PWA Push Notification Demo
         </h1>
-        <p className="text-gray-600">
-          Logic managed by App.tsx and public/sw.js.
-        </p>
+        <p className="text-gray-600">Logica Push integrata in App.tsx.</p>
       </header>
 
-      <div className="w-full max-w-md p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+      <div className="w-full max-w-md p-6 bg-white rounded-xl shadow-lg border border-gray-200 mb-6">
         <h2 className="text-xl font-semibold mb-4 text-indigo-600">
-          Service Worker Status
+          Stato Service Worker
         </h2>
         <p className="text-lg font-medium text-gray-700">
-          Status:{" "}
+          Stato:{" "}
           <span className="font-mono text-sm px-2 py-1 rounded-md bg-indigo-100 text-indigo-700">
             {status}
           </span>
         </p>
-
         <p className="mt-4 text-sm text-gray-500">
-          Check the browser console to see the "Push Subscription obtained"
-          object, which you must send to your server.
+          Controlla la console per lo stato del Service Worker e
+          dell'iscrizione.
         </p>
-        <p className="mt-2 text-xs text-red-500">
-          Remember to replace the `VAPID_PUBLIC_KEY` variable in `App.tsx`!
-        </p>
+      </div>
+
+      <div className="w-full max-w-md p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+        <h2 className="text-xl font-semibold mb-4 text-green-600">
+          Ultima Notifica In-App
+        </h2>
+
+        {lastNotification ? (
+          <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+            <h3 className="font-bold text-green-700">
+              🔔 Messaggio Push Ricevuto
+            </h3>
+            <p className="text-sm text-gray-700">Fonte: {messageSource}</p>
+            <p className="text-lg mt-1 font-mono break-words">
+              **{lastNotification.title || "Nessun Titolo"}**:{" "}
+              {lastNotification.message || "Nessun Messaggio"}
+            </p>
+          </div>
+        ) : (
+          <p className="text-gray-600">
+            In attesa di ricevere una notifica push in-app...
+          </p>
+        )}
+
+        <div className="mt-4 border-t pt-4">
+          <p className="text-xs text-gray-400">
+            Per testare, assicurati che il server Node.js sia in esecuzione
+            (porta 3000) e apri:
+            <code className="bg-gray-100 p-1 rounded block mt-1">
+              http://localhost:3000/api/push
+            </code>
+          </p>
+        </div>
       </div>
     </div>
   );
 };
+
 export default App;

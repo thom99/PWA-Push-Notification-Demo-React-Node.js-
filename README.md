@@ -14,9 +14,11 @@ Setup Completo: Dalla sottoscrizione al client all'invio della notifica dal serv
 
 Gestione VAPID: Recupero della chiave pubblica VAPID dal server e conversione in Uint8Array sul client per l'iscrizione.
 
-Service Worker Minimalista: public/sw.js configurato solo per intercettare gli eventi push e gestire i notificationclick.
+Comunicazione in Tempo Reale: Utilizza BroadcastChannel per inviare i dati della notifica dal Service Worker direttamente all'app React aperta, consentendo aggiornamenti immediati dell'interfaccia utente.
 
-Configurazione Vite Proxy: Utilizzo del proxy di Vite per instradare le chiamate API (/api/) al server Node.js.
+Service Worker Essenziale: public/sw.js è configurato per intercettare gli eventi push (mostrando la notifica desktop) e gestire i notificationclick.
+
+Configurazione Vite Proxy: Utilizzo del proxy di Vite per instradare le chiamate API (/api/\*) al server Node.js.
 
 Sicurezza migliorata: Le chiavi VAPID private sono gestite tramite variabili d'ambiente (.env).
 
@@ -76,9 +78,9 @@ Il server tenterà di inviare la notifica a tutte le sottoscrizioni salvate (in 
 
 📜 Struttura dei File
 
-src/App.tsx => Componente React principale. Gestisce il recupero della chiave VAPID e l'iscrizione Push.
+src/App.tsx => Componente React principale. Gestisce il recupero della chiave VAPID, l'iscrizione Push e l'ascolto delle notifiche in tempo reale tramite BroadcastChannel.
 
-public/sw.js => Service Worker. Intercetta gli eventi push e notificationclick.
+public/sw.js => Service Worker. Intercetta gli eventi push, gestisce i notificationclick e invia i messaggi in-app tramite BroadcastChannel.
 
 server.js => Server Node.js (Express). Fornisce la chiave VAPID pubblica e gestisce l'invio delle notifiche.
 
