@@ -10,15 +10,15 @@ Backend (Server): Un server Node.js con Express che memorizza le sottoscrizioni 
 
 🌟 Caratteristiche Principali
 
-Sicurezza migliorata: Le chiavi VAPID private sono gestite tramite variabili d'ambiente (.env).
-
 Setup Completo: Dalla sottoscrizione al client all'invio della notifica dal server.
 
 Gestione VAPID: Recupero della chiave pubblica VAPID dal server e conversione in Uint8Array sul client per l'iscrizione.
 
 Service Worker Minimalista: public/sw.js configurato solo per intercettare gli eventi push e gestire i notificationclick.
 
-Configurazione Vite Proxy: Utilizzo del proxy di Vite per instradare le chiamate API (/api/\*) al server Node.js.
+Configurazione Vite Proxy: Utilizzo del proxy di Vite per instradare le chiamate API (/api/) al server Node.js.
+
+Sicurezza migliorata: Le chiavi VAPID private sono gestite tramite variabili d'ambiente (.env).
 
 🛠️ Come Avviare il Progetto
 
@@ -40,7 +40,6 @@ Aggiungi le tue chiavi: Inserisci le tue chiavi VAPID pubbliche e private reali 
 
 VAPID_PUBLIC_KEY="LA_TUA_CHIAVE_PUBBLICA"
 VAPID_PRIVATE_KEY="LA_TUA_CHIAVE_PRIVATA_SECRETA"
-VAPID_MAILTO="mailto:tua.email@esempio.com"
 
 Proteggi le chiavi: Assicurati di aggiungere .env al tuo file .gitignore in modo che le chiavi private non vengano mai caricate su GitHub.
 
@@ -77,26 +76,12 @@ Il server tenterà di inviare la notifica a tutte le sottoscrizioni salvate (in 
 
 📜 Struttura dei File
 
-File
+src/App.tsx => Componente React principale. Gestisce il recupero della chiave VAPID e l'iscrizione Push.
 
-Ruolo
+public/sw.js => Service Worker. Intercetta gli eventi push e notificationclick.
 
-src/App.tsx
+server.js => Server Node.js (Express). Fornisce la chiave VAPID pubblica e gestisce l'invio delle notifiche.
 
-Componente React principale. Gestisce il recupero della chiave VAPID e l'iscrizione Push.
+vite.config.ts => Configurazione del proxy per connettere il frontend (:5173) al server (:3000).
 
-public/sw.js
-
-Service Worker. Intercetta gli eventi push e notificationclick.
-
-server.js
-
-Server Node.js (Express). Fornisce la chiave VAPID pubblica e gestisce l'invio delle notifiche.
-
-vite.config.ts
-
-Configurazione del proxy per connettere il frontend (:5173) al server (:3000).
-
-.env
-
-Contiene le chiavi VAPID private e pubbliche, tenute fuori dal controllo di versione (Git).
+.env => Contiene le chiavi VAPID private e pubbliche, tenute fuori dal controllo di versione (Git).
