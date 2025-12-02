@@ -1,89 +1,95 @@
 🚀 PWA Push Notification Demo (React + Node.js)
 
-Questo repository contiene un esempio completo e funzionante di implementazione delle Notifiche Push Web (Web Push Notifications) in una Progressive Web App (PWA).
+This repository contains a complete and working example of implementing Web Push Notifications in a Progressive Web App (PWA).
 
-Il progetto è diviso in due parti:
+The project is divided into two parts:
 
-Frontend (Client): Un'applicazione creata con React e Vite, che gestisce la registrazione del Service Worker, la richiesta di permessi per le notifiche e l'iscrizione al servizio Push (utilizzando le chiavi VAPID).
+Frontend (Client):
+A React + Vite application that handles Service Worker registration, notification permission requests, and subscription to the Push service (using VAPID keys).
 
-Backend (Server): Un server Node.js con Express che memorizza le sottoscrizioni e utilizza la libreria web-push per inviare effettivamente le notifiche.
+Backend (Server):
+A Node.js + Express server that stores subscriptions and uses the web-push library to actually send notifications.
 
-🌟 Caratteristiche Principali
+🌟 Main Features
 
-Setup Completo: Dalla sottoscrizione al client all'invio della notifica dal server.
+Complete Setup: From client subscription to sending notifications from the server.
 
-Gestione VAPID: Recupero della chiave pubblica VAPID dal server e conversione in Uint8Array sul client per l'iscrizione.
+VAPID Management: Fetching the VAPID public key from the server and converting it to a Uint8Array on the client for subscription.
 
-Comunicazione in Tempo Reale: Utilizza BroadcastChannel per inviare i dati della notifica dal Service Worker direttamente all'app React aperta, consentendo aggiornamenti immediati dell'interfaccia utente.
+Real-Time Communication: Uses BroadcastChannel to send notification data from the Service Worker directly to the open React app, enabling immediate UI updates.
 
-Service Worker Essenziale: public/sw.js è configurato per intercettare gli eventi push (mostrando la notifica desktop) e gestire i notificationclick.
+Essential Service Worker: public/sw.js is configured to intercept push events (displaying desktop notifications) and handle notificationclick.
 
-Configurazione Vite Proxy: Utilizzo del proxy di Vite per instradare le chiamate API (/api/\*) al server Node.js.
+Vite Proxy Setup: Uses Vite’s proxy to route API calls (/api/*) to the Node.js server.
 
-Sicurezza migliorata: Le chiavi VAPID private sono gestite tramite variabili d'ambiente (.env).
+Improved Security: Private VAPID keys are managed via environment variables (.env).
 
-🛠️ Come Avviare il Progetto
+🛠️ How to Run the Project
+Prerequisites
 
-Prerequisiti
+Node.js (version 14+)
 
-Node.js (versione 14+)
+A set of VAPID keys (public and private)
 
-Un set di chiavi VAPID (pubblica e privata).
+dotenv library (install with npm install dotenv on the server)
 
-La libreria dotenv (installata via npm install dotenv per il server).
+1. Backend Setup (Security)
 
-1. Configurazione del Backend (Sicurezza)
+⚠️ WARNING:
+server.js now reads secret keys from environment variables to ensure the published code remains secure.
 
-ATTENZIONE: Il file server.js legge ora le chiavi segrete da variabili d'ambiente per garantire la sicurezza del codice pubblicato.
+Create the .env file
 
-Crea il file .env: Nella root del progetto Node.js, crea un file chiamato .env.
+In the Node.js project root, create a file named .env.
 
-Aggiungi le tue chiavi: Inserisci le tue chiavi VAPID pubbliche e private reali nel file .env nel seguente formato:
+Add your keys
 
-VAPID_PUBLIC_KEY="LA_TUA_CHIAVE_PUBBLICA"
-VAPID_PRIVATE_KEY="LA_TUA_CHIAVE_PRIVATA_SECRETA"
+Insert your real VAPID public/private keys inside .env:
 
-Proteggi le chiavi: Assicurati di aggiungere .env al tuo file .gitignore in modo che le chiavi private non vengano mai caricate su GitHub.
+VAPID_PUBLIC_KEY="YOUR_PUBLIC_KEY"
+VAPID_PRIVATE_KEY="YOUR_PRIVATE_SECRET_KEY"
 
-2. Esecuzione
+Protect the keys
 
-Avvia il server e l'applicazione frontend in due terminali separati.
+Make sure .env is added to .gitignore so private keys are never pushed to GitHub.
 
-Terminale 1: Avvia il Server Node.js
+2. Run the Project
 
-# Assumendo che tu abbia installato le dipendenze del server
+Run the server and the frontend in two separate terminals.
 
+Terminal 1: Start the Node.js Server
+# Assuming server dependencies are already installed
 node server.js
 
-Terminale 2: Avvia l'App Frontend (Vite/React)
-
-# Assumendo che tu sia nella cartella del progetto React
-
+Terminal 2: Start the Frontend App (Vite/React)
+# Inside the React project folder
 npm install
 npm run dev
 
-3. Test dell'Invio della Notifica
+3. Test Push Notification Sending
 
-Apri l'applicazione nel browser (es. http://localhost:5173).
+Open the app in your browser (e.g., http://localhost:5173).
 
-Accetta la richiesta di autorizzazione per le notifiche.
+Accept the notification permission request.
 
-Controlla la console per vedere la sottoscrizione inviata con successo al server.
+Check the browser console to confirm the subscription was sent to the server.
 
-Per inviare una notifica di prova, apri una nuova scheda del browser e vai all'endpoint di test:
+To send a test notification, open a new browser tab and visit:
 
 http://localhost:3000/api/push
 
-Il server tenterà di inviare la notifica a tutte le sottoscrizioni salvate (in memoria). Se tutto è configurato correttamente, vedrai la notifica comparire sul tuo desktop!
 
-📜 Struttura dei File
+The server will attempt to send the notification to all stored subscriptions (in-memory).
+If everything is set up correctly, you will see the notification appear on your desktop!
 
-src/App.tsx => Componente React principale. Gestisce il recupero della chiave VAPID, l'iscrizione Push e l'ascolto delle notifiche in tempo reale tramite BroadcastChannel.
+📜 File Structure
 
-public/sw.js => Service Worker. Intercetta gli eventi push, gestisce i notificationclick e invia i messaggi in-app tramite BroadcastChannel.
+src/App.tsx → Main React component. Handles VAPID key fetching, Push subscription, and listening to real-time notifications via BroadcastChannel.
 
-server.js => Server Node.js (Express). Fornisce la chiave VAPID pubblica e gestisce l'invio delle notifiche.
+public/sw.js → Service Worker. intercepts push events, handles notificationclick, and sends in-app messages via BroadcastChannel.
 
-vite.config.ts => Configurazione del proxy per connettere il frontend (:5173) al server (:3000).
+server.js → Node.js + Express server. Provides the VAPID public key and handles sending notifications.
 
-.env => Contiene le chiavi VAPID private e pubbliche, tenute fuori dal controllo di versione (Git).
+vite.config.ts → Proxy configuration to connect frontend (:5173) with backend (:3000).
+
+.env → Contains VAPID public/private keys, kept out of version control (Git).
