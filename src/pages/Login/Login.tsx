@@ -1,11 +1,13 @@
-import React from "react";
+import { useSearchParams } from "react-router";
+import LoginUser from "./LoginUser";
+import ActivationUser from "./ActivationUser";
 
 function Login(): React.ReactNode {
-  return (
-    <>
-      <h1>LOGIN</h1>
-    </>
-  );
+  const [searchParams, _setSearchParams] = useSearchParams();
+
+  const pathType = searchParams.get("type");
+
+  return pathType === "activation" ? <ActivationUser /> : <LoginUser />;
 }
 
 export default Login;

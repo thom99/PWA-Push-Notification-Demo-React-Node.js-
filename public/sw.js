@@ -99,7 +99,7 @@ self.addEventListener("notificationclick", (event) => {
 
 //OFFLINE CACHE
 
-// 1. Lifecycle fo Service Worker => Installation and Activation
+// 1. Lifecycle to Service Worker => Installation and Activation
 
 // // install => installed at the time of initial registration, used for static caching of web app assets like HTML, CSS, JavaScript and static imagine for offline use
 // // activate => activated after the installation

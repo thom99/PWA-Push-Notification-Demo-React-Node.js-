@@ -6,13 +6,15 @@ import bodyParser from "body-parser";
 
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({
+  path: "../.env",
+});
 // require("dotenv").config();
 
 const app = express();
 app.use(bodyParser.json());
 
-// 1. CHIAVI VAPID (USA QUELLE CHE HAI GENERATO)
+// 1. KEYS VAPID
 
 const vapidPublicKey = process.env.VAPID_PUBLIC_KEY;
 const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;

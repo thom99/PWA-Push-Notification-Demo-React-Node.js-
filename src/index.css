@@ -1,26 +1,139 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  /* color-scheme: light dark; */
+/* ===============================
+   1. RESET E VARIABILI SHADCN
+   =============================== */
+@layer base {
+  /* :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 221.2 83% 53.3%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83% 53.3%;
+
+    --radius: 0.5rem;
+  } */
+
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+
+    --radius: 0.5rem;
+    --ring: 221.2 83% 53.3%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --input: 214.3 31.8% 91.4%;
+    --border: 214.3 31.8% 91.4%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased min-h-screen py-4 px-4;
+  }
 }
 
-body {
-  margin: 0;
-  width: 100%;
-  place-items: center;
-  /* min-width: 320px; */
+/* ===============================
+   2. LAYOUT RESPONSIVE DI BASE
+   =============================== */
+
+@layer utilities {
+  /* Container responsive centrato */
+  .page-container {
+    @apply max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Sezione verticale con spacing, pronta per mobile-first */
+  .section {
+    @apply w-full py-6 sm:py-10 md:py-16;
+  }
+
+  /* Grid responsive colonnare */
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  /* Flex column mobile, row su desktop */
+  .flex-responsive {
+    @apply flex flex-col md:flex-row gap-4;
+  }
 }
 
-#root {
-  min-width: 100vw;
-  margin: 0 auto;
-  /* padding: 2rem; */
-  text-align: center;
+/* ===============================
+   3. UTILITY VELOCI PER TYPO
+   =============================== */
+
+@layer components {
+  .title-xl {
+    @apply text-3xl sm:text-4xl font-bold tracking-tight;
+  }
+
+  .title-lg {
+    @apply text-2xl sm:text-3xl font-semibold;
+  }
+
+  .text-muted {
+    @apply text-muted-foreground text-sm;
+  }
 }

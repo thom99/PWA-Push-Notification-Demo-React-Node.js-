@@ -13,10 +13,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   //Get User
   const getUser = async () => {
     try {
-      const res = await fetch("../utils/mock/user.json");
+      const res = await fetch(
+        "https://mocki.io/v1/22811418-0903-4b28-b943-3ea50ab6e713"
+      ); // response json => /utils/mock/user.json
+
       if (res.ok) {
         const data = await res.json();
-        setUser(data.user);
+        setUser(data);
       }
     } catch {
       setUser(null);

@@ -10,7 +10,7 @@ export type User = {
   status: string; //
 };
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -21,6 +21,5 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  console.log({ context });
   return context;
 };
